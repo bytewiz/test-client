@@ -16,7 +16,7 @@ export default class App extends Component {
 
   _submit(e){
     e.preventDefault();
-    getToken("/user/login")
+    getToken("/user/login", {username : this.state.email, })
     .then((response, fail) => {
       if(fail) {
         this.setState({response: "an error happend"})
