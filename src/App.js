@@ -1,48 +1,47 @@
 import React, { Component } from 'react';
-import { getToken, getAccount } from "./service/api"
+import { getToken } from "./service/api"
 
 
 export default class App extends Component {
 
   constructor(){
-    super()
+    super();
 
     this.state = {
-      email: "",
-      password: "",
-      response: null
+      username: "",
+      password: ""
     }
   }
 
   _submit(e){
+
     e.preventDefault();
-    getToken("/user/login", {username : this.state.email, })
+    getToken("/user/login", {username : this.state.username, password : this.state.password})
     .then((response, fail) => {
       if(fail) {
-        this.setState({response: "an error happend"})
+        this.setState({response: "An error happend"})
       }
-      console.log("res", response.body)
-      this.setState({response: "you created a token! :-)"})
+      // denne metode køre ved "success" - når requestet er "successful" skal den ændre url til /books
+      window.location.href = "/books";
+      console.log("response", response.body);
+      this.setState({response: response.body})
     })
-
-
 
   }
   render() {
     return (
       <div>
-        <h1>Hello, world.</h1>
-
+        <h1 style={{textAlign: "center", fontSize: "50px"}}>Welcome</h1>
         <form onSubmit={this._submit.bind(this)}>
           <label>
-            username
-            <input type="text" onChange={(e) => this.setState({email: e.target.value})}/>
+            Username
+            <input type="text" onChange={(e) => this.setState({username: e.target.value})}/>
           </label>
           <label>
-            password
+            Password
             <input type="password" onChange={(e) => this.setState({password: e.target.value})}/>
           </label>
-          <button type="submit">login</button>
+          <button type="submit">Login</button>
 
         </form>
         {this.state.response}
@@ -51,3 +50,4 @@ export default class App extends Component {
     );
   }
 }
+
